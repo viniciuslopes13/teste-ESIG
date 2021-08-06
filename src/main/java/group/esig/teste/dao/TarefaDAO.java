@@ -25,7 +25,7 @@ public class TarefaDAO {
 		statement.execute();
 	}
 
-	public void update(Tarefa tarefa) throws Exception {
+	public void atualizar(Tarefa tarefa) throws Exception {
 		Connection conexao = BDConfig.getConnection();
 		String sql = "UPDATE tarefa SET idresponsavel=?, titulo=?, descricao=?, deadline=?, status=? WHERE id=?";
 		PreparedStatement statement = conexao.prepareStatement(sql);
@@ -38,7 +38,7 @@ public class TarefaDAO {
 		statement.execute();
 	}
 
-	public void delete(Tarefa tarefa) throws Exception {
+	public void deletar(Tarefa tarefa) throws Exception {
 		Connection conexao = BDConfig.getConnection();
 		String sql = "DELETE FROM tarefa WHERE id=?";
 		PreparedStatement statement = conexao.prepareStatement(sql);
@@ -66,21 +66,41 @@ public class TarefaDAO {
 		}
 		return list;
 	}
-	
+
 	public void concluirTarefa(Tarefa tarefa) throws Exception {
 		Connection conexao = BDConfig.getConnection();
 		String sql = "UPDATE tarefa SET status=? WHERE id=?";
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setString(1, "Concluída");
 		statement.setInt(2, tarefa.getId());
-		statement.execute();		
+		statement.execute();
 	}
-	
-	public List<Tarefa> buscar() throws Exception{
+
+	public List<Tarefa> buscar(String busca, String status) throws Exception {
 		List<Tarefa> list = new ArrayList<>();
-		
-		
-		
+		Connection con = BDConfig.getConnection();
+		String sql = "SELECT * FROM tarefa t INNER JOIN pessoa p ON t.idresponsavel=p.idpessoa"
+				+ "WHERE (id LIKE ? OR titulo LIKE ? OR nome LIKE ? OR descricao LIKE ?) AND status=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, "%" + busca + "%");
+		ps.setString(2, "%" + busca + "%");
+		ps.setString(3, "%" + busca + "%");
+		ps.setString(4, "%" + busca + "%");
+		ps.setString(5, status);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			Tarefa tarefa = new Tarefa();
+			tarefa.setId(rs.getInt("id"));
+			tarefa.setTitulo(rs.getString("titulo"));
+			tarefa.setDescricao(rs.getString("descricao"));
+			tarefa.setDeadline(rs.getDate("deadline"));
+			tarefa.setStatus(rs.getString("status"));
+			Pessoa responsavel = new Pessoa();
+			responsavel.setId(rs.getInt("idresponsavel"));
+			responsavel.setNome(rs.getString("nome"));
+			tarefa.setResponsavel(responsavel);
+			list.add(tarefa);
+		}
 		return list;
 	}
 

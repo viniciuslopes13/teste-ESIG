@@ -1,7 +1,7 @@
 CREATE DATABASE teste_esig;
 
 CREATE TABLE Pessoa (
-    id SERIAL PRIMARY KEY,
+    idpessoa SERIAL PRIMARY KEY,
     nome VARCHAR(100)
 );
 
@@ -16,4 +16,4 @@ CREATE TABLE Tarefa (
  
 ALTER TABLE Tarefa ADD CONSTRAINT FK_Tarefa
     FOREIGN KEY (idResponsavel)
-    REFERENCES Pessoa (id);
+    REFERENCES Pessoa (idpessoa);

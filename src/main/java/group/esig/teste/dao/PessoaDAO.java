@@ -27,7 +27,7 @@ public class PessoaDAO {
 		ResultSet rs = statement.executeQuery();
 		while (rs.next()) {
 			Pessoa pessoa = new Pessoa();
-			pessoa.setId(rs.getInt("id"));
+			pessoa.setId(rs.getInt("idpessoa"));
 			pessoa.setNome(rs.getString("nome"));
 			list.add(pessoa);
 		}
