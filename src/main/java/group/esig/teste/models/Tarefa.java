@@ -1,6 +1,6 @@
 package group.esig.teste.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Tarefa {
 
@@ -8,7 +8,8 @@ public class Tarefa {
 	private String titulo;
 	private String descricao;
 	private Pessoa responsavel;
-	private Date deadline;
+	private String prioridade;
+	private LocalDate deadline;
 	private String status;
 
 	public Tarefa() {
@@ -46,11 +47,19 @@ public class Tarefa {
 		this.responsavel = responsavel;
 	}
 
-	public Date getDeadline() {
+	public String getPrioridade() {
+		return prioridade;
+	}
+
+	public void setPrioridade(String prioridade) {
+		this.prioridade = prioridade;
+	}
+
+	public LocalDate getDeadline() {
 		return deadline;
 	}
 
-	public void setDeadline(Date deadline) {
+	public void setDeadline(LocalDate deadline) {
 		this.deadline = deadline;
 	}
 

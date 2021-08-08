@@ -7,7 +7,7 @@ public class testePessoaDAO {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Pessoa pessoa = new Pessoa();
-		pessoa.setNome("Francisco Vinicius");
+		pessoa.setNome("Francisco Costa");
 		
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		try {

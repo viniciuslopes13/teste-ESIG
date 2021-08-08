@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Sistema de Gerenciamento de Tarefas</title>
+</h:head>
+<h:body>
+
+	<p:growl id="message" showDetail="true" />
+
+	<div class="card"
+		style="display: flex; justify-content: center; align-items: center;">
+		<p:card
+			style="width: 50rem; margin-bottom: 2em;justify-content:center">
+			<h:form>
+				<div class="p-field">
+					<p:outputLabel for="busca"
+						value="Digite algum termo para filtrar (id, título, descrição): " />
+					<p:inputText id="busca" value="#{tarefaDataViewMBean.busca}" />
+				</div>
+				<div class="p-field">
+					<p:outputLabel for="status" value="Status: " />
+					<p:selectOneMenu id="status"
+						value="#{tarefaDataViewMBean.statusEscolhido}">
+						<f:selectItems value="#{tarefaDataViewMBean.statusBusca}" />
+					</p:selectOneMenu>
+					<p:commandButton class="ui-button-success rounded-button"
+						value="Buscar" icon="pi pi-search"
+						action="#{tarefaDataViewMBean.filtrar}" update="dt-tarefas" />
+				</div>
+			</h:form>
+		</p:card>
+	</div>
+
+	<p:dataTable id="dt-tarefas" var="tarefa"
+		value="#{tarefaDataViewMBean.listTarefas}" widgetVar="tarefaTable"
+		rowKey="#{usuario.id}" paginator="true" rows="10"
+		paginatorPosition="bottom">
+
+		<p:column headerText="ID">
+			<h:outputText value="#{tarefa.id}" />
+		</p:column>
+
+		<p:column headerText="Título">
+			<h:outputText value="#{tarefa.titulo}" />
+		</p:column>
+
+		<p:column headerText="Responsável">
+			<h:outputText value="#{tarefa.responsavel.nome}" />
+		</p:column>
+
+		<p:column headerText="Status">
+			<h:outputText value="#{tarefa.status}" />
+		</p:column>
+
+		<p:column headerText="Deadline">
+			<h:outputText value="#{tarefa.deadline}" />
+		</p:column>
+
+		<p:column headerText="Ações">
+			<p:commandButton icon="pi pi-pencil"
+				styleClass="edit-button rounded-button ui-button-info"
+				action="#{tarefaDataViewMBean.editar}">
+				<f:setPropertyActionListener value="#{tarefa}"
+					target="#{tarefaDataViewMBean.tarefaSelecionada}" />
+			</p:commandButton>
+
+			<p:commandButton class="ui-button-danger rounded-button"
+				icon="pi pi-trash" update="message dt-tarefas"
+				action="#{tarefaDataViewMBean.deletarTarefa}">
+				<f:setPropertyActionListener value="#{tarefa}"
+					target="#{tarefaDataViewMBean.tarefaSelecionada}" />
+				<p:confirm header="Confirmação"
+					message="Tem certeza que deseja apagar esta tarefa?"
+					icon="pi pi-info-circle" />
+			</p:commandButton>
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+				responsive="true" width="350">
+				<p:commandButton value="Cancelar" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+				<p:commandButton value="Apagar" type="button"
+					styleClass="ui-confirmdialog-yes" />
+			</p:confirmDialog>
+
+			<p:commandButton icon="pi pi-check-circle"
+				rendered="#{tarefa.status == 'Em andamento'}"
+				class="ui-button-success rounded-button" onclick="PF('cd').show()">
+				<f:setPropertyActionListener value="#{tarefa}"
+					target="#{tarefaDataViewMBean.tarefaSelecionada}" />
+				<p:confirmDialog
+					message="Tem certeza que deseja concluir esta tarefa?"
+					header="Concluindo tarefa" widgetVar="cd">
+					<p:commandButton value="Concluir"
+						actionListener="#{tarefaDataViewMBean.concluirTarefa}"
+						update="message dt-tarefas" oncomplete="PF('cd').hide()" />
+					<p:commandButton value="Cancelar" onclick="PF('cd').hide();"
+						type="button" />
+				</p:confirmDialog>
+			</p:commandButton>
+		</p:column>
+
+	</p:dataTable>
+	<h2 style="display: flex; justify-content: center; align-items: center;">
+		<a href="cadastrar_tarefa.jsf">Cadastrar Tarefa!</a>
+	</h2>
+</h:body>
+</html>

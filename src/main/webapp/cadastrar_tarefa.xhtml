@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Sistema de Gerenciamento de Tarefas</title>
+</h:head>
+<h:body>
+
+	<p:growl id="message" showDetail="true" />
+	<div class="card"
+		style="display: flex; justify-content: center; align-items: center;">
+		<h:form>
+			<h:panelGroup id="adicionar-tarefa">
+				<p:card style="width: 50rem; margin-bottom: 2em">
+					<div class="ui-fluid">
+						<div class="p-field">
+							<p:outputLabel for="titulo" value="Titulo:" />
+							<p:inputText id="titulo"
+								value="#{cadastroTarefaMBean.tarefa.titulo}" required="true"
+								requiredMessage="Titulo: Campo Obrigatório!" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="descricao" value="Descricao:" />
+							<p:inputTextarea id="descricao"
+								value="#{cadastroTarefaMBean.tarefa.descricao}" required="true"
+								requiredMessage="Descricao: Campo Obrigatório!" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="responsavel_list" value="Responsavel:" />
+							<h:selectOneMenu id="responsavel_list"
+								value="#{cadastroTarefaMBean.responsavel.id}" required="true"
+								requiredMessage="Responsavel: Campo Obrigatório!">
+								<f:selectItem itemLabel="--- Selecione ---" itemValue="" />
+								<f:selectItems
+									value="#{cadastroResponsavelMBean.listaResponsaveis}"
+									var="responsavel" itemValue="#{responsavel.id}"
+									itemLabel="ID: #{responsavel.id} - #{responsavel.nome}" />
+							</h:selectOneMenu>
+							<p:commandButton icon="pi pi-plus"
+								styleClass="rounded-button ui-button-success" process="@this"
+								onclick="PF('adicionarResponsavel').show()" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="prioridade" value="Prioridade:" />
+							<h:selectOneMenu id="prioridade"
+								value="#{cadastroTarefaMBean.tarefa.prioridade}">
+								<f:selectItems value="#{cadastroTarefaMBean.prioridade}" />
+							</h:selectOneMenu>
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="deadline" value="Deadline:" />
+							<p:datePicker id="deadline"
+								value="#{cadastroTarefaMBean.tarefa.deadline}" required="true"
+								requiredMessage="Deadline: Campo Obrigatório!" />
+						</div>
+						<div>
+							<f:facet name="footer">
+								<p:commandButton value="Cadastrar"
+									action="#{cadastroTarefaMBean.cadastrarTarefa}"
+									process="adicionar-tarefa" ajax="false" />
+							</f:facet>
+						</div>
+					</div>
+				</p:card>
+			</h:panelGroup>
+			<p:dialog header="Adicionar Responsavel" showEffect="fade"
+				modal="true" widgetVar="adicionarResponsavel" responsive="true">
+				<p:outputPanel id="adicionar-responsavel" class="ui-fluid">
+					<div class="p-field">
+						<p:outputLabel for="nome_dialog" value="Nome: " />
+						<p:inputText id="nome_dialog"
+							value="#{cadastroResponsavelMBean.responsavel.nome}" />
+					</div>
+				</p:outputPanel>
+				<f:facet name="footer">
+					<p:commandButton value="Adicionar" icon="pi pi-check"
+						update="responsavel_list message"
+						process="adicionar-responsavel @this"
+						actionListener="#{cadastroResponsavelMBean.inserirPessoa}"
+						onclick="PF('adicionarResponsavel').hide()" />
+					<p:commandButton value="Cancelar" icon="pi pi-times"
+						onclick="PF('adicionarResponsavel').hide()"
+						class="ui-button-secondary" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+	</div>
+	<h2
+		style="display: flex; justify-content: center; align-items: center;">
+		<a href="listar_tarefas.jsf">Lista de Tarefas!</a>
+	</h2>
+</h:body>
+</html>

@@ -9,9 +9,10 @@ CREATE TABLE Tarefa (
     id SERIAL PRIMARY KEY,
     idResponsavel INTEGER,
     titulo VARCHAR(100),
-    decricao VARCHAR(200),
+    descricao VARCHAR(200),
     deadline DATE,
-    status VARCHAR(20)
+    status VARCHAR(20),
+    prioridade VARCHAR(30)
 );
  
 ALTER TABLE Tarefa ADD CONSTRAINT FK_Tarefa
