@@ -1,0 +1,19 @@
+Itens implementados:
+Os itens a) e b) foram implementados conforme solicitado.
+
+Adicionei uma classe Pessoa no modelo de negócio para que fosse possível adicionar novos responsáveis.
+
+Na tela de listagem tornei o sistema de busca mais genérico (sem tantos campos), para ser mais simples para os usuários.
+
+O campo de concluir uma tarefa só aparece em tarefas que tem o status "em andamento".
+
+O Maven foi utilizado para gerenciar as dependências.
+
+Compilador utilizado: Eclipse IDE for Enterprise Java and Web Developers - 2021-06
+Servidor: Apache Tomcat 8.5
+Banco de Dados: Postgresql 42.2.23
+
+1 - O script de Banco de Dados utilizado está na pasta com o nome script_criacao_BD.txt
+2 - Usuário do BD: postgres, senha: 12345
+
+
